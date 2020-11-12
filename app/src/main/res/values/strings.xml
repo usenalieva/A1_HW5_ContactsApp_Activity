@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Lesson4RecyclerView</string>
+    <string name="add">ADD</string>
+    <string name="save">save</string>
+    <string name="name">Name</string>
+    <string name="phone_number">phone number</string>
+    <string name="x">X</string>
+</resources>
