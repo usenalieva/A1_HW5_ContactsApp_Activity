@@ -19,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_CODE_EDIT = 12;
     static final int REQUEST_CODE_ADD = 13;
+    public static final String KEY_FOR_EDITING = "key for editing a contact";
     static Uri imageData;
 
-    Dialog dialog;
     ImageView imageView;
 
     @Override
@@ -71,62 +74,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        adapter.setOnContactClickListener(pos -> {
+       adapter.setOnContactClickListener(pos1 -> {
+           Intent intent = new Intent(MainActivity.this, EditContact.class);
+           intent.putExtra(KEY_FOR_EDITING, pos1);
+           startActivityForResult(intent, REQUEST_CODE_EDIT);
 
-            dialog = new Dialog(this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.edit_contact_window);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setCancelable(false);
-
-            // closing the dialog window
-            TextView btnClose = dialog.findViewById(R.id.btn_close);
-            btnClose.setOnClickListener(v -> {
-                dialog.dismiss();
-            });
-
-            // getting the saved data
-            imageView = dialog.findViewById(R.id.ic_profilePic);
-            EditText nameEdit = dialog.findViewById(R.id.et_nameEdited);
-            EditText phoneEdit = dialog.findViewById(R.id.et_phoneEdited);
-            nameEdit.setText(list.get(pos).title);
-            phoneEdit.setText(list.get(pos).number);
-            imageView.setImageURI(list.get(pos).imageURI);
-
-            //reset the image
-            imageView.setOnClickListener(view -> {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "choose an image"), REQUEST_CODE_EDIT);
-            });
-
-            // saving the edited data
-            Button btnSave = dialog.findViewById(R.id.btn_saveEdited);
-            btnSave.setOnClickListener(v -> {
-                String titleName = nameEdit.getText().toString();
-                String titlePhone = phoneEdit.getText().toString();
-                String image = imageData.toString();
-                TitleModel modelEdited = new TitleModel();
-                modelEdited.setTitle(titleName);
-                modelEdited.setNumber(titlePhone);
-                modelEdited.setImageView(image);
-                modelEdited.setImageURI(imageData);
-                list.set(pos, modelEdited);
-                adapter.notifyDataSetChanged();
-                dialog.dismiss();
-            });
-
-            dialog.show();
-        });
+       });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_EDIT && resultCode == RESULT_OK && data != null) {
-            imageData = data.getData();
-            imageView.setImageURI(imageData);
+            //imageData = data.getData();
+            //TitleModel titleModel = (TitleModel) data.getSerializableExtra(EditContact.KEY_FOR_EDITING);
+            //titleModel.setImageURI(imageData);
+            //adapter.editContact(titleModel,pos);
+            adapter.notifyDataSetChanged();
         }
         if (requestCode == REQUEST_CODE_ADD && resultCode == RESULT_OK && data != null) {
             imageData = data.getData();

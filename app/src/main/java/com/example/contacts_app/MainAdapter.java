@@ -41,6 +41,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         notifyDataSetChanged();
     }
 
+    public  void editContact (TitleModel titleModel, int pos) {
+        list.set(pos, titleModel);
+        notifyItemChanged(pos);    }
+
 
     @NonNull
     @Override

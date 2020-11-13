@@ -17,7 +17,7 @@ public class ApplicationActivity extends AppCompatActivity {
     private Button btnSave;
 
     static final int REQUEST_CODE_ADDING = 200;
-    public static final String KEY_FOR_ADDING = "key for  adding a contact";
+    public static final String KEY_FOR_ADDING = "key for adding a contact";
 
     Uri imageData;
 
